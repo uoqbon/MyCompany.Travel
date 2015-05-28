@@ -33,11 +33,10 @@
             // initialize a graphService instance using the token acquired from previous step
             var graphService = new DirectoryDataService(tenant, token);
 
-            var users = (DataServiceQuery<Microsoft.WindowsAzure.ActiveDirectory.User>)graphService.users.Where(x => x.userPrincipalName == userPrincipalName);
-            
+            var users = graphService.users;
             var response = users.Execute() as QueryOperationResponse<User>;
 
-            List<User> userList = response.ToList();
+            List<User> userList = response.Where(u => u.userPrincipalName == userPrincipalName).ToList();
             if (userList.Any())
             {
                 var user = userList.First();
